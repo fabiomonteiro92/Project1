@@ -1,0 +1,965 @@
+#Working Memory Binding Task
+#Fábio Monteiro (2020)
+#interpretação do output com os resultados extraídos da plataforma Psytoolkit no depois do script com o programa
+
+options 
+	fullscreen
+	background color 155 155 155
+	set &stimuli_display_time 5000 #tempo de exposição da primeira tela (telas Probe)
+	set &fc_display_1s 1000 # tempo de exposição da tela com a fixation cross nas condições em que o intervalo de retenção é de 1 segundo
+	set &fc_display_8s 8000 # tempo de exposição da tela com a fixation cross nas condições em que o intervalo de retenção é de 8 segundos
+	set &fc_betweeen_trials_display_time 2000 #tempo de exposição da cruz de fixação (vermelha) que sinaliza o início de um ensaio
+	set &CounterPractice 0 #contabiliza o número de ensaios que já foram realizados nos ensaios de treino
+	set &AccuracyScorePractice 0 #número total de acertos nos ensaios de treino
+	set &AccuracyPercentPractice 0 #perentagem de acertos nos ensaios de treino
+	set &CounterExperiment 0 #contabiliza o número de ensaios que já foram realizados nos ensaios experimentais
+	set &AccuracyScoreExperiment 0 #número total de acertos nos ensaios experimentais
+	set &AccuracyPercentExperiment 0 #número total de acertos nos ensaios experimentais
+	set &Sum_RT_Experiment 0 #Soma do tempo de reação em todos os ensaios experimentais
+	set &Mean_RT_Experiment 0 #Tempo de reação médio nos ensaios experimentais
+	set &Hits1Sec 0 #número total de acertos nas ensaios experimentais com um intervalo de retenção de 1 segundo
+	set &Hits8Sec 0 #número total de acertos nas ensaios experimentais com um intervalo de retenção de 8 segundos
+	set &FalseAlarms1Sec 0 #número total de erros (ou falsos alarmes) nas ensaios experimentais com um intervalo de retenção de 1 segundo
+	set &FalseAlarms8Sec 0 #número total de erros (ou falsos alarmes) nas ensaios experimentais com um intervalo de retenção de 8 segundos
+	set &NonResponses1Sec 0 #número total de ensaios aos quais o participante não respondeu nos ensaios com um intervalo de retenção de 1 segundo
+	set &NonResponses8Sec 0 #número total de ensaios aos quais o participante não respondeu nos ensaios com um intervalo de retenção de 8 segundos
+	set &ResponsesGiven1Sec 0 #número total de respostas nos ensaios com um intervalo de retenção de 1 segundo
+	set &ResponsesGiven8Sec 0 #número total de respostas nos ensaios com um intervalo de retenção de 8 segundos
+	set &QuinetteAccuracyScore1Sec 0 #cálculo da taxa de acertos para as condições com um intervalo de retenção de 1 segundo, segundo os autores originais  
+                                     #da tarefa (Quinette et al. 2006)
+	set &QuinetteAccuracyScore8Sec 0 #cálculo da taxa de acertos para as condições com um intervalo de retenção de 8 segundo, segundo os autores originais  
+                                     #da tarefa (Quinette et al. 2006)
+	set &QuinnetteProcessingScore1Sec 0 #cálculo do score de processamento para as condições com um intervalo de retenção de 1 segundo, segundo os autores originais  
+                                        #da tarefa (Quinette et al. 2006)
+	set &QuinnetteProcessingScore8Sec 0 #cálculo do score de processamento para as condições com um intervalo de retenção de 1 segundo, segundo os autores originais  
+                                        #da tarefa (Quinette et al. 2006)
+	startbutton text Pressione a tecla esquerda do rato para iniciar a tarefa
+	loading text Aguarde um momento enquanto a tarefa inicia
+	
+#fontes utilizadas ao longo da tarefa
+fonts
+	arial 20
+	myfont arial 75
+	myfonttexto arial 35
+
+#imagens utilizadas na tarefa (na primeira coluna) e raiz que indidica o diretório onde elas estão armazendas (na segunda coluna)
+bitmaps 
+	OneSecProbe1		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe1.png
+	OneSecProbe2		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe2.png
+	OneSecProbe3		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe3.png
+	OneSecProbe4		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe4.png
+	OneSecProbe5		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe5.png
+	OneSecProbe6		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe6.png
+	OneSecProbe7		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe7.png
+	OneSecProbe8		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe8.png
+	OneSecProbe9		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe9.png
+	OneSecProbe10		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe10.png
+	OneSecProbe11		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe11.png
+	OneSecProbe12		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe12.png
+	OneSecProbe13		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe13.png
+	OneSecProbe14		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe14.png
+	OneSecProbe15		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe15.png
+	OneSecProbe16		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe16.png
+	OneSecProbe17		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe17.png
+	OneSecProbe18		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe18.png
+	OneSecProbe19		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe19.png
+	OneSecProbe20		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe20.png
+	OneSecProbe21		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe21.png
+	OneSecProbe22		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe22.png
+	OneSecProbe23		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe23.png
+	OneSecProbe24		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe24.png
+	OneSecProbe25		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe25.png
+	OneSecProbe26		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe26.png
+	OneSecProbe27		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe27.png
+	OneSecProbe28		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe28.png
+	OneSecProbe29		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe29.png
+	OneSecProbe30		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe30.png
+	OneSecProbe31		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe31.png
+	OneSecProbe32		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe32.png
+	OneSecProbe33		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe33.png
+	OneSecProbe34		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe34.png
+	OneSecProbe35		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe35.png
+	OneSecProbe36		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe36.png
+	OneSecProbe37		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe37.png
+	OneSecProbe38		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe38.png
+	OneSecProbe39		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe39.png
+	OneSecProbe40		Stimuli/Match/Probe/Probe_one_sec/OneSecProbe40.png
+	EightSecProbe1		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe1.png
+	EightSecProbe2		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe2.png
+	EightSecProbe3		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe3.png
+	EightSecProbe4		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe4.png
+	EightSecProbe5		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe5.png
+	EightSecProbe6		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe6.png
+	EightSecProbe7		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe7.png
+	EightSecProbe8		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe8.png
+	EightSecProbe9		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe9.png
+	EightSecProbe10		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe10.png
+	EightSecProbe11		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe11.png
+	EightSecProbe12		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe12.png
+	EightSecProbe13		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe13.png
+	EightSecProbe14		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe14.png
+	EightSecProbe15		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe15.png
+	EightSecProbe16		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe16.png
+	EightSecProbe17		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe17.png
+	EightSecProbe18		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe18.png
+	EightSecProbe19		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe19.png
+	EightSecProbe20		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe20.png
+	EightSecProbe21		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe21.png
+	EightSecProbe22		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe22.png
+	EightSecProbe23		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe23.png
+	EightSecProbe24		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe24.png
+	EightSecProbe25		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe25.png
+	EightSecProbe26		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe26.png
+	EightSecProbe27		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe27.png
+	EightSecProbe28		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe28.png
+	EightSecProbe29		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe29.png
+	EightSecProbe30		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe30.png
+	EightSecProbe31		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe31.png
+	EightSecProbe32		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe32.png
+	EightSecProbe33		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe33.png
+	EightSecProbe34		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe34.png
+	EightSecProbe35		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe35.png
+	EightSecProbe36		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe36.png
+	EightSecProbe37		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe37.png
+	EightSecProbe38		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe38.png
+	EightSecProbe39		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe39.png
+	EightSecProbe40		Stimuli/Match/Probe/Probe_eight_sec/EightSecProbe40.png
+	OneSecTarget1		Stimuli/Match/Target/Target_one_sec/OneSecTarget1.png
+	OneSecTarget2		Stimuli/Match/Target/Target_one_sec/OneSecTarget2.png
+	OneSecTarget3		Stimuli/Match/Target/Target_one_sec/OneSecTarget3.png
+	OneSecTarget4		Stimuli/Match/Target/Target_one_sec/OneSecTarget4.png
+	OneSecTarget5		Stimuli/Match/Target/Target_one_sec/OneSecTarget5.png
+	OneSecTarget6		Stimuli/Match/Target/Target_one_sec/OneSecTarget6.png
+	OneSecTarget7		Stimuli/Match/Target/Target_one_sec/OneSecTarget7.png
+	OneSecTarget8		Stimuli/Match/Target/Target_one_sec/OneSecTarget8.png
+	OneSecTarget9		Stimuli/Match/Target/Target_one_sec/OneSecTarget9.png
+	OneSecTarget10		Stimuli/Match/Target/Target_one_sec/OneSecTarget10.png
+	OneSecTarget11		Stimuli/Match/Target/Target_one_sec/OneSecTarget11.png
+	OneSecTarget12		Stimuli/Match/Target/Target_one_sec/OneSecTarget12.png
+	OneSecTarget13		Stimuli/Match/Target/Target_one_sec/OneSecTarget13.png
+	OneSecTarget14		Stimuli/Match/Target/Target_one_sec/OneSecTarget14.png
+	OneSecTarget15		Stimuli/Match/Target/Target_one_sec/OneSecTarget15.png
+	OneSecTarget16		Stimuli/Match/Target/Target_one_sec/OneSecTarget16.png
+	OneSecTarget17		Stimuli/Match/Target/Target_one_sec/OneSecTarget17.png
+	OneSecTarget18		Stimuli/Match/Target/Target_one_sec/OneSecTarget18.png
+	OneSecTarget19		Stimuli/Match/Target/Target_one_sec/OneSecTarget19.png
+	OneSecTarget20		Stimuli/Match/Target/Target_one_sec/OneSecTarget20.png
+	OneSecTarget21		Stimuli/Match/Target/Target_one_sec/OneSecTarget21.png
+	OneSecTarget22		Stimuli/Match/Target/Target_one_sec/OneSecTarget22.png
+	OneSecTarget23		Stimuli/Match/Target/Target_one_sec/OneSecTarget23.png
+	OneSecTarget24		Stimuli/Match/Target/Target_one_sec/OneSecTarget24.png
+	OneSecTarget25		Stimuli/Match/Target/Target_one_sec/OneSecTarget25.png
+	OneSecTarget26		Stimuli/Match/Target/Target_one_sec/OneSecTarget26.png
+	OneSecTarget27		Stimuli/Match/Target/Target_one_sec/OneSecTarget27.png
+	OneSecTarget28		Stimuli/Match/Target/Target_one_sec/OneSecTarget28.png
+	OneSecTarget29		Stimuli/Match/Target/Target_one_sec/OneSecTarget29.png
+	OneSecTarget30		Stimuli/Match/Target/Target_one_sec/OneSecTarget30.png
+	OneSecTarget31		Stimuli/Match/Target/Target_one_sec/OneSecTarget31.png
+	OneSecTarget32		Stimuli/Match/Target/Target_one_sec/OneSecTarget32.png
+	OneSecTarget33		Stimuli/Match/Target/Target_one_sec/OneSecTarget33.png
+	OneSecTarget34		Stimuli/Match/Target/Target_one_sec/OneSecTarget34.png
+	OneSecTarget35		Stimuli/Match/Target/Target_one_sec/OneSecTarget35.png
+	OneSecTarget36		Stimuli/Match/Target/Target_one_sec/OneSecTarget36.png
+	OneSecTarget37		Stimuli/Match/Target/Target_one_sec/OneSecTarget37.png
+	OneSecTarget38		Stimuli/Match/Target/Target_one_sec/OneSecTarget38.png
+	OneSecTarget39		Stimuli/Match/Target/Target_one_sec/OneSecTarget39.png
+	OneSecTarget40		Stimuli/Match/Target/Target_one_sec/OneSecTarget40.png
+	EightSecTarget1		Stimuli/Match/Target/Target_eight_sec/EightSecTarget1.png
+	EightSecTarget2		Stimuli/Match/Target/Target_eight_sec/EightSecTarget2.png
+	EightSecTarget3		Stimuli/Match/Target/Target_eight_sec/EightSecTarget3.png
+	EightSecTarget4		Stimuli/Match/Target/Target_eight_sec/EightSecTarget4.png
+	EightSecTarget5		Stimuli/Match/Target/Target_eight_sec/EightSecTarget5.png
+	EightSecTarget6		Stimuli/Match/Target/Target_eight_sec/EightSecTarget6.png
+	EightSecTarget7		Stimuli/Match/Target/Target_eight_sec/EightSecTarget7.png
+	EightSecTarget8		Stimuli/Match/Target/Target_eight_sec/EightSecTarget8.png
+	EightSecTarget9		Stimuli/Match/Target/Target_eight_sec/EightSecTarget9.png
+	EightSecTarget10		Stimuli/Match/Target/Target_eight_sec/EightSecTarget10.png
+	EightSecTarget11		Stimuli/Match/Target/Target_eight_sec/EightSecTarget11.png
+	EightSecTarget12		Stimuli/Match/Target/Target_eight_sec/EightSecTarget12.png
+	EightSecTarget13		Stimuli/Match/Target/Target_eight_sec/EightSecTarget13.png
+	EightSecTarget14		Stimuli/Match/Target/Target_eight_sec/EightSecTarget14.png
+	EightSecTarget15		Stimuli/Match/Target/Target_eight_sec/EightSecTarget15.png
+	EightSecTarget16		Stimuli/Match/Target/Target_eight_sec/EightSecTarget16.png
+	EightSecTarget17		Stimuli/Match/Target/Target_eight_sec/EightSecTarget17.png
+	EightSecTarget18		Stimuli/Match/Target/Target_eight_sec/EightSecTarget18.png
+	EightSecTarget19		Stimuli/Match/Target/Target_eight_sec/EightSecTarget19.png
+	EightSecTarget20		Stimuli/Match/Target/Target_eight_sec/EightSecTarget20.png
+	EightSecTarget21		Stimuli/Match/Target/Target_eight_sec/EightSecTarget21.png
+	EightSecTarget22		Stimuli/Match/Target/Target_eight_sec/EightSecTarget22.png
+	EightSecTarget23		Stimuli/Match/Target/Target_eight_sec/EightSecTarget23.png
+	EightSecTarget24		Stimuli/Match/Target/Target_eight_sec/EightSecTarget24.png
+	EightSecTarget25		Stimuli/Match/Target/Target_eight_sec/EightSecTarget25.png
+	EightSecTarget26		Stimuli/Match/Target/Target_eight_sec/EightSecTarget26.png
+	EightSecTarget27		Stimuli/Match/Target/Target_eight_sec/EightSecTarget27.png
+	EightSecTarget28		Stimuli/Match/Target/Target_eight_sec/EightSecTarget28.png
+	EightSecTarget29		Stimuli/Match/Target/Target_eight_sec/EightSecTarget29.png
+	EightSecTarget30		Stimuli/Match/Target/Target_eight_sec/EightSecTarget30.png
+	EightSecTarget31		Stimuli/Match/Target/Target_eight_sec/EightSecTarget31.png
+	EightSecTarget32		Stimuli/Match/Target/Target_eight_sec/EightSecTarget32.png
+	EightSecTarget33		Stimuli/Match/Target/Target_eight_sec/EightSecTarget33.png
+	EightSecTarget34		Stimuli/Match/Target/Target_eight_sec/EightSecTarget34.png
+	EightSecTarget35		Stimuli/Match/Target/Target_eight_sec/EightSecTarget35.png
+	EightSecTarget36		Stimuli/Match/Target/Target_eight_sec/EightSecTarget36.png
+	EightSecTarget37		Stimuli/Match/Target/Target_eight_sec/EightSecTarget37.png
+	EightSecTarget38		Stimuli/Match/Target/Target_eight_sec/EightSecTarget38.png
+	EightSecTarget39		Stimuli/Match/Target/Target_eight_sec/EightSecTarget39.png
+	EightSecTarget40		Stimuli/Match/Target/Target_eight_sec/EightSecTarget40.png
+	OneSecNProbe1		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe1.png
+	OneSecNProbe2		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe2.png
+	OneSecNProbe3		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe3.png
+	OneSecNProbe4		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe4.png
+	OneSecNProbe5		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe5.png
+	OneSecNProbe6		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe6.png
+	OneSecNProbe7		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe7.png
+	OneSecNProbe8		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe8.png
+	OneSecNProbe9		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe9.png
+	OneSecNProbe10		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe10.png
+	OneSecNProbe11		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe11.png
+	OneSecNProbe12		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe12.png
+	OneSecNProbe13		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe13.png
+	OneSecNProbe14		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe14.png
+	OneSecNProbe15		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe15.png
+	OneSecNProbe16		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe16.png
+	OneSecNProbe17		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe17.png
+	OneSecNProbe18		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe18.png
+	OneSecNProbe19		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe19.png
+	OneSecNProbe20		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe20.png
+	OneSecNProbe21		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe21.png
+	OneSecNProbe22		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe22.png
+	OneSecNProbe23		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe23.png
+	OneSecNProbe24		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe24.png
+	OneSecNProbe25		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe25.png
+	OneSecNProbe26		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe26.png
+	OneSecNProbe27		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe27.png
+	OneSecNProbe28		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe28.png
+	OneSecNProbe29		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe29.png
+	OneSecNProbe30		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe30.png
+	OneSecNProbe31		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe31.png
+	OneSecNProbe32		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe32.png
+	OneSecNProbe33		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe33.png
+	OneSecNProbe34		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe34.png
+	OneSecNProbe35		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe35.png
+	OneSecNProbe36		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe36.png
+	OneSecNProbe37		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe37.png
+	OneSecNProbe38		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe38.png
+	OneSecNProbe39		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe39.png
+	OneSecNProbe40		Stimuli/Mismatch/NProbe/NProbe_one_sec/OneSecNProbe40.png
+	EightSecNProbe1		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe1.png
+	EightSecNProbe2		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe2.png
+	EightSecNProbe3		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe3.png
+	EightSecNProbe4		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe4.png
+	EightSecNProbe5		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe5.png
+	EightSecNProbe6		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe6.png
+	EightSecNProbe7		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe7.png
+	EightSecNProbe8		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe8.png
+	EightSecNProbe9		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe9.png
+	EightSecNProbe10		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe10.png
+	EightSecNProbe11		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe11.png
+	EightSecNProbe12		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe12.png
+	EightSecNProbe13		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe13.png
+	EightSecNProbe14		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe14.png
+	EightSecNProbe15		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe15.png
+	EightSecNProbe16		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe16.png
+	EightSecNProbe17		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe17.png
+	EightSecNProbe18		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe18.png
+	EightSecNProbe19		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe19.png
+	EightSecNProbe20		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe20.png
+	EightSecNProbe21		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe21.png
+	EightSecNProbe22		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe22.png
+	EightSecNProbe23		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe23.png
+	EightSecNProbe24		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe24.png
+	EightSecNProbe25		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe25.png
+	EightSecNProbe26		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe26.png
+	EightSecNProbe27		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe27.png
+	EightSecNProbe28		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe28.png
+	EightSecNProbe29		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe29.png
+	EightSecNProbe30		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe30.png
+	EightSecNProbe31		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe31.png
+	EightSecNProbe32		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe32.png
+	EightSecNProbe33		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe33.png
+	EightSecNProbe34		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe34.png
+	EightSecNProbe35		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe35.png
+	EightSecNProbe36		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe36.png
+	EightSecNProbe37		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe37.png
+	EightSecNProbe38		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe38.png
+	EightSecNProbe39		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe39.png
+	EightSecNProbe40		Stimuli/Mismatch/NProbe/NProbe_eight_sec/EightSecNProbe40.png
+	OneSecNTarget1		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget1.png
+	OneSecNTarget2		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget2.png
+	OneSecNTarget3		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget3.png
+	OneSecNTarget4		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget4.png
+	OneSecNTarget5		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget5.png
+	OneSecNTarget6		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget6.png
+	OneSecNTarget7		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget7.png
+	OneSecNTarget8		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget8.png
+	OneSecNTarget9		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget9.png
+	OneSecNTarget10		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget10.png
+	OneSecNTarget11		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget11.png
+	OneSecNTarget12		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget12.png
+	OneSecNTarget13		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget13.png
+	OneSecNTarget14		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget14.png
+	OneSecNTarget15		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget15.png
+	OneSecNTarget16		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget16.png
+	OneSecNTarget17		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget17.png
+	OneSecNTarget18		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget18.png
+	OneSecNTarget19		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget19.png
+	OneSecNTarget20		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget20.png
+	OneSecNTarget21		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget21.png
+	OneSecNTarget22		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget22.png
+	OneSecNTarget23		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget23.png
+	OneSecNTarget24		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget24.png
+	OneSecNTarget25		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget25.png
+	OneSecNTarget26		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget26.png
+	OneSecNTarget27		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget27.png
+	OneSecNTarget28		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget28.png
+	OneSecNTarget29		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget29.png
+	OneSecNTarget30		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget30.png
+	OneSecNTarget31		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget31.png
+	OneSecNTarget32		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget32.png
+	OneSecNTarget33		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget33.png
+	OneSecNTarget34		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget34.png
+	OneSecNTarget35		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget35.png
+	OneSecNTarget36		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget36.png
+	OneSecNTarget37		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget37.png
+	OneSecNTarget38		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget38.png
+	OneSecNTarget39		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget39.png
+	OneSecNTarget40		Stimuli/Mismatch/NTarget/NTarget_one_sec/OneSecNTarget40.png
+	EightSecNTarget1		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget1.png
+	EightSecNTarget2		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget2.png
+	EightSecNTarget3		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget3.png
+	EightSecNTarget4		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget4.png
+	EightSecNTarget5		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget5.png
+	EightSecNTarget6		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget6.png
+	EightSecNTarget7		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget7.png
+	EightSecNTarget8		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget8.png
+	EightSecNTarget9		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget9.png
+	EightSecNTarget10		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget10.png
+	EightSecNTarget11		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget11.png
+	EightSecNTarget12		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget12.png
+	EightSecNTarget13		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget13.png
+	EightSecNTarget14		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget14.png
+	EightSecNTarget15		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget15.png
+	EightSecNTarget16		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget16.png
+	EightSecNTarget17		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget17.png
+	EightSecNTarget18		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget18.png
+	EightSecNTarget19		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget19.png
+	EightSecNTarget20		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget20.png
+	EightSecNTarget21		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget21.png
+	EightSecNTarget22		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget22.png
+	EightSecNTarget23		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget23.png
+	EightSecNTarget24		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget24.png
+	EightSecNTarget25		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget25.png
+	EightSecNTarget26		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget26.png
+	EightSecNTarget27		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget27.png
+	EightSecNTarget28		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget28.png
+	EightSecNTarget29		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget29.png
+	EightSecNTarget30		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget30.png
+	EightSecNTarget31		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget31.png
+	EightSecNTarget32		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget32.png
+	EightSecNTarget33		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget33.png
+	EightSecNTarget34		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget34.png
+	EightSecNTarget35		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget35.png
+	EightSecNTarget36		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget36.png
+	EightSecNTarget37		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget37.png
+	EightSecNTarget38		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget38.png
+	EightSecNTarget39		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget39.png
+	EightSecNTarget40		Stimuli/Mismatch/NTarget/NTarget_eight_sec/EightSecNTarget40.png
+	PracticeOneSecProbe1		Stimuli/Practice/PracticeMatch/PracticeProbe/Practice_Probe_one_sec/PracticeOneSecProbe1.png
+	PracticeOneSecProbe2		Stimuli/Practice/PracticeMatch/PracticeProbe/Practice_Probe_one_sec/PracticeOneSecProbe2.png
+	PracticeEightSecProbe1		Stimuli/Practice/PracticeMatch/PracticeProbe/Practice_Probe_eight_sec/PracticeEightSecProbe1.png
+	PracticeOneSecTarget1		Stimuli/Practice/PracticeMatch/PracticeTarget/Practice_Target_one_sec/PracticeOneSecTarget1.png
+	PracticeOneSecTarget2		Stimuli/Practice/PracticeMatch/PracticeTarget/Practice_Target_one_sec/PracticeOneSecTarget2.png
+	PracticeEightSecTarget1		Stimuli/Practice/PracticeMatch/PracticeTarget/Practice_Target_eight_sec/PracticeEightSecTarget1.png
+	PracticeOneSecNProbe1		Stimuli/Practice/PracticeMismatch/PracticeNProbe/Practice_NProbe_one_sec/PracticeOneSecNProbe1.png
+	PracticeEightSecNProbe1		Stimuli/Practice/PracticeMismatch/PracticeNProbe/Practice_NProbe_eight_sec/PracticeEightSecNProbe1.png
+	PracticeEightSecNProbe2		Stimuli/Practice/PracticeMismatch/PracticeNProbe/Practice_NProbe_eight_sec/PracticeEightSecNProbe2.png
+	PracticeOneSecNTarget1		Stimuli/Practice/PracticeMismatch/PraticeNTarget/Practice_NTarget_one_sec/PracticeOneSecNTarget1.png
+	PracticeEightSecNTarget1		Stimuli/Practice/PracticeMismatch/PraticeNTarget/Practice_NTarget_eight_sec/PracticeEightSecNTarget1.png
+	PracticeEightSecNTarget2		Stimuli/Practice/PracticeMismatch/PraticeNTarget/Practice_NTarget_eight_sec/PracticeEightSecNTarget2.png
+	Instrucoes1						Stimuli/Instucoes/Instrucoes1.png
+	Instrucoes2						Stimuli/Instucoes/Instrucoes2.png
+	Instrucoes3						Stimuli/Instucoes/Instrucoes3.png
+
+#Tabelas que codificam os estímulos que irão ser apresentados durante a tarefa.
+#A primeira coluna contém o estímulo que será apresentado na primeira tela (ponto de fixação vermelha)
+#A segunda coluna contém o estímulo que os participantes terão que memorizar (probe)
+#A terceira coluna contém o estímulo que será apresentado como ponto de fixação durante o intervalo de retenção
+#A quarta coluna contém os estimulos alvo (target)
+#A quinta coluna contém informação referenta à tecla que os participantes devem pressionar nesse ensaio para que este seja considerado um acerto  
+
+table	MyPracticeTable1				
+		"+"	PracticeOneSecProbe1	"+"	PracticeOneSecTarget1	1
+		"+"	PracticeOneSecProbe2	"+"	PracticeOneSecTarget2	1
+							
+table	MyPracticeTable2				
+		"+"	PracticeEightSecProbe1	"+"	PracticeEightSecTarget1	1
+							
+table	MyPracticeTable3				
+		"+"	PracticeOneSecNProbe1	"+"	PracticeOneSecNTarget1	2
+							
+table	MyPracticeTable4				
+		"+"	PracticeEightSecNProbe1	"+"	PracticeEightSecNTarget1	2
+		"+"	PracticeEightSecNProbe2	"+"	PracticeEightSecNTarget2	2
+
+
+table	MyTable1				
+		"+"	OneSecProbe1	"+"	OneSecTarget1	1
+		"+"	OneSecProbe2	"+"	OneSecTarget2	1
+		"+"	OneSecProbe3	"+"	OneSecTarget3	1
+		"+"	OneSecProbe4	"+"	OneSecTarget4	1
+		"+"	OneSecProbe5	"+"	OneSecTarget5	1
+		"+"	OneSecProbe6	"+"	OneSecTarget6	1
+		"+"	OneSecProbe7	"+"	OneSecTarget7	1
+		"+"	OneSecProbe8	"+"	OneSecTarget8	1
+		"+"	OneSecProbe9	"+"	OneSecTarget9	1
+		"+"	OneSecProbe10	"+"	OneSecTarget10	1
+		"+"	OneSecProbe11	"+"	OneSecTarget11	1
+		"+"	OneSecProbe12	"+"	OneSecTarget12	1
+		"+"	OneSecProbe13	"+"	OneSecTarget13	1
+		"+"	OneSecProbe14	"+"	OneSecTarget14	1
+		"+"	OneSecProbe15	"+"	OneSecTarget15	1
+		"+"	OneSecProbe16	"+"	OneSecTarget16	1
+		"+"	OneSecProbe17	"+"	OneSecTarget17	1
+		"+"	OneSecProbe18	"+"	OneSecTarget18	1
+		"+"	OneSecProbe19	"+"	OneSecTarget19	1
+		"+"	OneSecProbe20	"+"	OneSecTarget20	1
+		"+"	OneSecProbe21	"+"	OneSecTarget21	1
+		"+"	OneSecProbe22	"+"	OneSecTarget22	1
+		"+"	OneSecProbe23	"+"	OneSecTarget23	1
+		"+"	OneSecProbe24	"+"	OneSecTarget24	1
+		"+"	OneSecProbe25	"+"	OneSecTarget25	1
+		"+"	OneSecProbe26	"+"	OneSecTarget26	1
+		"+"	OneSecProbe27	"+"	OneSecTarget27	1
+		"+"	OneSecProbe28	"+"	OneSecTarget28	1
+		"+"	OneSecProbe29	"+"	OneSecTarget29	1
+		"+"	OneSecProbe30	"+"	OneSecTarget30	1
+		"+"	OneSecProbe31	"+"	OneSecTarget31	1
+		"+"	OneSecProbe32	"+"	OneSecTarget32	1
+		"+"	OneSecProbe33	"+"	OneSecTarget33	1
+		"+"	OneSecProbe34	"+"	OneSecTarget34	1
+		"+"	OneSecProbe35	"+"	OneSecTarget35	1
+		"+"	OneSecProbe36	"+"	OneSecTarget36	1
+		"+"	OneSecProbe37	"+"	OneSecTarget37	1
+		"+"	OneSecProbe38	"+"	OneSecTarget38	1
+		"+"	OneSecProbe39	"+"	OneSecTarget39	1
+		"+"	OneSecProbe40	"+"	OneSecTarget40	1
+
+table	MyTable2				
+		"+"	EightSecProbe1	"+"	EightSecTarget1	1
+		"+"	EightSecProbe2	"+"	EightSecTarget2	1
+		"+"	EightSecProbe3	"+"	EightSecTarget3	1
+		"+"	EightSecProbe4	"+"	EightSecTarget4	1
+		"+"	EightSecProbe5	"+"	EightSecTarget5	1
+		"+"	EightSecProbe6	"+"	EightSecTarget6	1
+		"+"	EightSecProbe7	"+"	EightSecTarget7	1
+		"+"	EightSecProbe8	"+"	EightSecTarget8	1
+		"+"	EightSecProbe9	"+"	EightSecTarget9	1
+		"+"	EightSecProbe10	"+"	EightSecTarget10	1
+		"+"	EightSecProbe11	"+"	EightSecTarget11	1
+		"+"	EightSecProbe12	"+"	EightSecTarget12	1
+		"+"	EightSecProbe13	"+"	EightSecTarget13	1
+		"+"	EightSecProbe14	"+"	EightSecTarget14	1
+		"+"	EightSecProbe15	"+"	EightSecTarget15	1
+		"+"	EightSecProbe16	"+"	EightSecTarget16	1
+		"+"	EightSecProbe17	"+"	EightSecTarget17	1
+		"+"	EightSecProbe18	"+"	EightSecTarget18	1
+		"+"	EightSecProbe19	"+"	EightSecTarget19	1
+		"+"	EightSecProbe20	"+"	EightSecTarget20	1
+		"+"	EightSecProbe21	"+"	EightSecTarget21	1
+		"+"	EightSecProbe22	"+"	EightSecTarget22	1
+		"+"	EightSecProbe23	"+"	EightSecTarget23	1
+		"+"	EightSecProbe24	"+"	EightSecTarget24	1
+		"+"	EightSecProbe25	"+"	EightSecTarget25	1
+		"+"	EightSecProbe26	"+"	EightSecTarget26	1
+		"+"	EightSecProbe27	"+"	EightSecTarget27	1
+		"+"	EightSecProbe28	"+"	EightSecTarget28	1
+		"+"	EightSecProbe29	"+"	EightSecTarget29	1
+		"+"	EightSecProbe30	"+"	EightSecTarget30	1
+		"+"	EightSecProbe31	"+"	EightSecTarget31	1
+		"+"	EightSecProbe32	"+"	EightSecTarget32	1
+		"+"	EightSecProbe33	"+"	EightSecTarget33	1
+		"+"	EightSecProbe34	"+"	EightSecTarget34	1
+		"+"	EightSecProbe35	"+"	EightSecTarget35	1
+		"+"	EightSecProbe36	"+"	EightSecTarget36	1
+		"+"	EightSecProbe37	"+"	EightSecTarget37	1
+		"+"	EightSecProbe38	"+"	EightSecTarget38	1
+		"+"	EightSecProbe39	"+"	EightSecTarget39	1
+		"+"	EightSecProbe40	"+"	EightSecTarget40	1
+
+table	MyTable3				
+		"+"	OneSecNProbe1	"+"	OneSecNTarget1	2
+		"+"	OneSecNProbe2	"+"	OneSecNTarget2	2
+		"+"	OneSecNProbe3	"+"	OneSecNTarget3	2
+		"+"	OneSecNProbe4	"+"	OneSecNTarget4	2
+		"+"	OneSecNProbe5	"+"	OneSecNTarget5	2
+		"+"	OneSecNProbe6	"+"	OneSecNTarget6	2
+		"+"	OneSecNProbe7	"+"	OneSecNTarget7	2
+		"+"	OneSecNProbe8	"+"	OneSecNTarget8	2
+		"+"	OneSecNProbe9	"+"	OneSecNTarget9	2
+		"+"	OneSecNProbe10	"+"	OneSecNTarget10	2
+		"+"	OneSecNProbe11	"+"	OneSecNTarget11	2
+		"+"	OneSecNProbe12	"+"	OneSecNTarget12	2
+		"+"	OneSecNProbe13	"+"	OneSecNTarget13	2
+		"+"	OneSecNProbe14	"+"	OneSecNTarget14	2
+		"+"	OneSecNProbe15	"+"	OneSecNTarget15	2
+		"+"	OneSecNProbe16	"+"	OneSecNTarget16	2
+		"+"	OneSecNProbe17	"+"	OneSecNTarget17	2
+		"+"	OneSecNProbe18	"+"	OneSecNTarget18	2
+		"+"	OneSecNProbe19	"+"	OneSecNTarget19	2
+		"+"	OneSecNProbe20	"+"	OneSecNTarget20	2
+		"+"	OneSecNProbe21	"+"	OneSecNTarget21	2
+		"+"	OneSecNProbe22	"+"	OneSecNTarget22	2
+		"+"	OneSecNProbe23	"+"	OneSecNTarget23	2
+		"+"	OneSecNProbe24	"+"	OneSecNTarget24	2
+		"+"	OneSecNProbe25	"+"	OneSecNTarget25	2
+		"+"	OneSecNProbe26	"+"	OneSecNTarget26	2
+		"+"	OneSecNProbe27	"+"	OneSecNTarget27	2
+		"+"	OneSecNProbe28	"+"	OneSecNTarget28	2
+		"+"	OneSecNProbe29	"+"	OneSecNTarget29	2
+		"+"	OneSecNProbe30	"+"	OneSecNTarget30	2
+		"+"	OneSecNProbe31	"+"	OneSecNTarget31	2
+		"+"	OneSecNProbe32	"+"	OneSecNTarget32	2
+		"+"	OneSecNProbe33	"+"	OneSecNTarget33	2
+		"+"	OneSecNProbe34	"+"	OneSecNTarget34	2
+		"+"	OneSecNProbe35	"+"	OneSecNTarget35	2
+		"+"	OneSecNProbe36	"+"	OneSecNTarget36	2
+		"+"	OneSecNProbe37	"+"	OneSecNTarget37	2
+		"+"	OneSecNProbe38	"+"	OneSecNTarget38	2
+		"+"	OneSecNProbe39	"+"	OneSecNTarget39	2
+		"+"	OneSecNProbe40	"+"	OneSecNTarget40	2
+
+table	MyTable4				
+		"+"	EightSecNProbe1	"+"	EightSecNTarget1	2
+		"+"	EightSecNProbe2	"+"	EightSecNTarget2	2
+		"+"	EightSecNProbe3	"+"	EightSecNTarget3	2
+		"+"	EightSecNProbe4	"+"	EightSecNTarget4	2
+		"+"	EightSecNProbe5	"+"	EightSecNTarget5	2
+		"+"	EightSecNProbe6	"+"	EightSecNTarget6	2
+		"+"	EightSecNProbe7	"+"	EightSecNTarget7	2
+		"+"	EightSecNProbe8	"+"	EightSecNTarget8	2
+		"+"	EightSecNProbe9	"+"	EightSecNTarget9	2
+		"+"	EightSecNProbe10	"+"	EightSecNTarget10	2
+		"+"	EightSecNProbe11	"+"	EightSecNTarget11	2
+		"+"	EightSecNProbe12	"+"	EightSecNTarget12	2
+		"+"	EightSecNProbe13	"+"	EightSecNTarget13	2
+		"+"	EightSecNProbe14	"+"	EightSecNTarget14	2
+		"+"	EightSecNProbe15	"+"	EightSecNTarget15	2
+		"+"	EightSecNProbe16	"+"	EightSecNTarget16	2
+		"+"	EightSecNProbe17	"+"	EightSecNTarget17	2
+		"+"	EightSecNProbe18	"+"	EightSecNTarget18	2
+		"+"	EightSecNProbe19	"+"	EightSecNTarget19	2
+		"+"	EightSecNProbe20	"+"	EightSecNTarget20	2
+		"+"	EightSecNProbe21	"+"	EightSecNTarget21	2
+		"+"	EightSecNProbe22	"+"	EightSecNTarget22	2
+		"+"	EightSecNProbe23	"+"	EightSecNTarget23	2
+		"+"	EightSecNProbe24	"+"	EightSecNTarget24	2
+		"+"	EightSecNProbe25	"+"	EightSecNTarget25	2
+		"+"	EightSecNProbe26	"+"	EightSecNTarget26	2
+		"+"	EightSecNProbe27	"+"	EightSecNTarget27	2
+		"+"	EightSecNProbe28	"+"	EightSecNTarget28	2
+		"+"	EightSecNProbe29	"+"	EightSecNTarget29	2
+		"+"	EightSecNProbe30	"+"	EightSecNTarget30	2
+		"+"	EightSecNProbe31	"+"	EightSecNTarget31	2
+		"+"	EightSecNProbe32	"+"	EightSecNTarget32	2
+		"+"	EightSecNProbe33	"+"	EightSecNTarget33	2
+		"+"	EightSecNProbe34	"+"	EightSecNTarget34	2
+		"+"	EightSecNProbe35	"+"	EightSecNTarget35	2
+		"+"	EightSecNProbe36	"+"	EightSecNTarget36	2
+		"+"	EightSecNProbe37	"+"	EightSecNTarget37	2
+		"+"	EightSecNProbe38	"+"	EightSecNTarget38	2
+		"+"	EightSecNProbe39	"+"	EightSecNTarget39	2
+		"+"	EightSecNProbe40	"+"	EightSecNTarget40	2
+
+#programção da sequência de eventos que ocorrem em cada um dos diferentes tipos de condições de ensaios de treino 
+#e ensaios experimentais (Match 1 seg, Mimatch 1s, Match 8s, Mismatch 8s).
+
+task binding_task_practice_part1
+	table MyPracticeTable1 #tabela que é utilizada para selecionar os estímulos que serão exibidos neste bloco
+	font myfont #fonte utilizada neste bloco
+	keys 1 2 #teclas ativas durante este bloco (teclas que o participante pode pressionar para indicar se existe ou não um match entre probe e target) 
+	set &CounterPractice expression &CounterPractice + 1 #expressão que soma uma unidade ao counter dos ensaios de treino cada vez que este bloco é realizado
+	show text "+" 0 0 255 0 0 #inicio da exibição da fixation cross que sinaliza o início de um ensaio
+	delay &fc_betweeen_trials_display_time
+	clear -1 #fim da exibição da fixation cross que sinaliza o início de um ensaio
+	show bitmap @2 0 0 #inicio da exibição da tela com os estímulos (Probe)
+	delay &stimuli_display_time
+	clear -1 #fim da exibição da tela com os estímulos (Probe)
+	show text @3 0 0 0 0 0 #início da apresentação do ponto de fixação apresentado durante o intervalo de retenção
+	delay &fc_display_1s 
+	clear -1 #fim da exibição da tela com o ponto de fixação  apresentado durante o intervalo de retenção
+	show bitmap @4 0 0 #inicio da exibição da tela com o estímulo alvo (target)
+	readkey @5 4000 #leitura da resposta do participante (eg. 1, 2)
+	clear -1 #fim da exibição da tela com o estímulo alvo (target)
+	if STATUS == CORRECT #cálculo da variável que indica se o participante deu uma resposta certa ou errada em cada ensaio
+		set &AccuracyScorePractice expression &AccuracyScorePractice + 1
+	fi
+	if STATUS != CORRECT
+		set &AccuracyScorePractice expression &AccuracyScorePractice + 0
+	fi
+	#calulo do número total de acertos nos ensaios de treino e a da percentagem de acertos no ensaios de treino
+	if &CounterPractice == 4 
+		set &AccuracyPercentPractice expression (&AccuracyScorePractice / 4) * 100
+		save &AccuracyScorePractice
+	fi
+	
+task binding_task_practice_part2
+	table MyPracticeTable2 #tabela que é utilizada para selecionar os estímulos que serão exibidos neste bloco
+	font myfont #fonte utilizada neste bloco
+	keys 1 2 #teclas ativas durante este bloco (teclas que o participante pode pressionar para indicar se existe ou não um match entre probe e target)
+	set &CounterPractice expression &CounterPractice + 1 #expressão que soma uma unidade ao counter dos ensaios de treino cada vez que este bloco é realizado
+	show text "+" 0 0 255 0 0 #inicio da exibição da fixation cross que sinaliza o início de um ensaio
+	delay &fc_betweeen_trials_display_time
+	clear -1 #fim da exibição da fixation cross que sinaliza o início de um ensaio
+	show bitmap @2 0 0 #inicio da exibição da tela com os estímulos (Probe)
+	delay &stimuli_display_time
+	clear -1 #fim da exibição da tela com os estímulos (Probe)
+	show text @3 0 0 0 0 0 #início da apresentação do ponto de fixação apresentado durante o intervalo de retenção
+	delay &fc_display_8s 
+	clear -1 #fim da exibição da tela com o ponto de fixação  apresentado durante o intervalo de retenção
+	show bitmap @4 0 0 #inicio da exibição da tela com o estímulo alvo (target)
+	readkey @5 4000 #leitura da resposta do participante (eg. 1, 2)
+	clear -1 #fim da exibição da tela com o estímulo alvo (target)
+	if STATUS == CORRECT #cálculo da variável que indica se o participante deu uma resposta certa ou errada em cada ensaio
+		set &AccuracyScorePractice expression &AccuracyScorePractice + 1
+	fi
+	if STATUS != CORRECT
+		set &AccuracyScorePractice expression &AccuracyScorePractice + 0
+	fi
+	#calulo do número total de acertos nos ensaios de treino e a da percentagem de acertos no ensaios de treino
+	if &CounterPractice == 4
+		set &AccuracyPercentPractice expression (&AccuracyScorePractice / 4) * 100
+		save &AccuracyScorePractice
+	fi
+
+task binding_task_practice_part3
+	table MyPracticeTable3 #tabela que é utilizada para selecionar os estímulos que serão exibidos neste bloco
+	font myfont #fonte utilizada neste bloco
+	keys 1 2 #teclas ativas durante este bloco (teclas que o participante pode pressionar para indicar se existe ou não um match entre probe e target)
+	set &CounterPractice expression &CounterPractice + 1 #expressão que soma uma unidade ao counter dos ensaios de treino cada vez que este bloco é realizado
+	show text "+" 0 0 255 0 0 #inicio da exibição da fixation cross que sinaliza o início de um ensaio
+	delay &fc_betweeen_trials_display_time
+	clear -1 #fim da exibição da fixation cross que sinaliza o início de um ensaio
+	show bitmap @2 0 0 #inicio da exibição da tela com os estímulos (Probe)
+	delay &stimuli_display_time
+	clear -1 #fim da exibição da tela com os estímulos (Probe)
+	show text @3 0 0 0 0 0 #início da apresentação do ponto de fixação apresentado durante o intervalo de retenção
+	delay &fc_display_1s 
+	clear -1 #fim da exibição da tela com o ponto de fixação  apresentado durante o intervalo de retenção
+	show bitmap @4 0 0 #inicio da exibição da tela com o estímulo alvo (target)
+	readkey @5 4000 #leitura da resposta do participante (eg. 1, 2)
+	clear -1 #fim da exibição da tela com o estímulo alvo (target)
+	if STATUS == CORRECT #cálculo da variável que indica se o participante deu uma resposta certa ou errada em cada ensaio
+		set &AccuracyScorePractice expression &AccuracyScorePractice + 1
+	fi
+	if STATUS != CORRECT
+		set &AccuracyScorePractice expression &AccuracyScorePractice + 0
+	fi
+	#calulo do número total de acertos nos ensaios de treino e a da percentagem de acertos no ensaios de treino
+	if &CounterPractice == 4
+		set &AccuracyPercentPractice expression (&AccuracyScorePractice / 4) * 100
+		save &AccuracyScorePractice
+	fi
+
+task binding_task_practice_part4
+	table MyPracticeTable4 #tabela que é utilizada para selecionar os estímulos que serão exibidos neste bloco
+	font myfont #fonte utilizada neste bloco
+	keys 1 2 #teclas ativas durante este bloco (teclas que o participante pode pressionar para indicar se existe ou não um match entre probe e target)
+	set &CounterPractice expression &CounterPractice + 1 #expressão que soma uma unidade ao counter dos ensaios de treino cada vez que este bloco é realizado
+	show text "+" 0 0 255 0 0 #inicio da exibição da fixation cross que sinaliza o início de um ensaio
+	delay &fc_betweeen_trials_display_time
+	clear -1 #fim da exibição da fixation cross que sinaliza o início de um ensaio
+	show bitmap @2 0 0 #inicio da exibição da tela com os estímulos (Probe)
+	delay &stimuli_display_time
+	clear -1 #fim da exibição da tela com os estímulos (Probe)
+	show text @3 0 0 0 0 0 #início da apresentação do ponto de fixação apresentado durante o intervalo de retenção
+	delay &fc_display_8s 
+	clear -1 #fim da exibição da tela com o ponto de fixação  apresentado durante o intervalo de retenção
+	show bitmap @4 0 0 #inicio da exibição da tela com o estímulo alvo (target)
+	readkey @5 4000 #leitura da resposta do participante (eg. 1, 2)
+	clear -1 #fim da exibição da tela com o estímulo alvo (target)
+	if STATUS == CORRECT #cálculo da variável que indica se o participante deu uma resposta certa ou errada em cada ensaio
+		set &AccuracyScorePractice expression &AccuracyScorePractice + 1
+	fi
+	if STATUS != CORRECT
+		set &AccuracyScorePractice expression &AccuracyScorePractice + 0
+	fi
+	#calulo do número total de acertos nos ensaios de treino e a da percentagem de acertos no ensaios de treino
+	if &CounterPractice == 4
+		set &AccuracyPercentPractice expression (&AccuracyScorePractice / 4) * 100
+		save &AccuracyScorePractice
+	fi
+
+task binding_task_part1
+	table MyTable1 #tabela que é utilizada para selecionar os estímulos que serão exibidos neste bloco
+	font myfont #fonte utilizada neste bloco
+	keys 1 2 #teclas ativas durante este bloco (teclas que o participante pode pressionar para indicar se existe ou não um match entre probe e target)
+	set &Ref 1 #variável que indica a que binding_task_parte pertence um ensaio (e.g. 1 =  binding_task_part1, 2 = binding_task_part2, etc.)
+	set &CounterExperiment expression &CounterExperiment + 1 #expressão que soma uma unidade ao counter dos ensaios experimentais cada vez que este bloco é realizado
+	show text "+" 0 0 255 0 0 #inicio da exibição da fixation cross que sinaliza o início de um ensaio
+	delay &fc_betweeen_trials_display_time
+	clear -1 #fim da exibição da fixation cross que sinaliza o início de um ensaio
+	show bitmap @2 0 0 #inicio da exibição da tela com os estímulos (Probe)
+	set &binding_task_match_1s_stimuliNumber TABLEROW #variável que em conjunto com a variável &Ref, indica qual foi o estímulo que foi apresentado
+	delay &stimuli_display_time
+	clear -1 #fim da exibição da tela com os estímulos (Probe)
+	show text @3 0 0 0 0 0 #início da apresentação do ponto de fixação apresentado durante o intervalo de retenção
+	delay &fc_display_1s
+	clear -1 #fim da exibição da tela com o ponto de fixação  apresentado durante o intervalo de retenção
+	show bitmap @4 0 0 #inicio da exibição da tela com o estímulo alvo (target)
+	readkey @5 4000 #leitura da resposta do participante (eg. 1, 2)
+	clear -1 #fim da exibição da tela com o estímulo alvo (target)
+	set &binding_task_match_1s_RT RT #variável que contém o RT da resposta do participante
+	set &Sum_RT_Experiment expression &Sum_RT_Experiment + &binding_task_match_1s_RT  
+	#cálculo da variável que indica se o participante deu uma resposta certa ou errada em cada ensaio (&binding_task_match_1s_accuracy),
+	#do número total de acertos (&AccuracyScoreExperiment), dos acertos nos ensaios com um intervalo de retenção de 1 segundo (&Hits1Sec),
+	#do número total de respostas dadas nos ensaios com um intervalo de retenção de 1 segundo(&ResponsesGiven1Sec), e do número de ensaios
+	#em que o participante não respondeu nos ensaios com um intervalo de retenção de 1 segundo (&NonResponses1Sec) 
+	if STATUS == CORRECT
+		set &binding_task_match_1s_accuracy 1
+		set &AccuracyScoreExperiment expression &AccuracyScoreExperiment + 1
+		set &Hits1Sec expression &Hits1Sec	+ 1
+		set &ResponsesGiven1Sec expression &ResponsesGiven1Sec + 1
+	fi
+	if STATUS == WRONG
+		set &binding_task_match_1s_accuracy 0
+		set &AccuracyScoreExperiment expression &AccuracyScoreExperiment + 0
+		set &FalseAlarms1Sec expression &FalseAlarms1Sec + 1
+		set &ResponsesGiven1Sec expression &ResponsesGiven1Sec + 1
+	fi
+	if STATUS == TIMEOUT
+		set &binding_task_match_1s_accuracy 2
+		set &AccuracyScoreExperiment expression &AccuracyScoreExperiment + 0
+		set &NonResponses1Sec expression &NonResponses1Sec + 1
+	fi
+	save &Ref &binding_task_match_1s_stimuliNumber &binding_task_match_1s_RT &binding_task_match_1s_accuracy
+	#calulo do número total de acertos nos ensaios experimentais, da percentagem de acertos no ensaios experimentais
+	#e da taxa de acertos e processing score para as condições com um intervalo de retenção de 1 e 8 segundos, segundo os autores originais  
+    #da tarefa (Quinette et al. 2006)
+	if &CounterExperiment == 40
+		set &AccuracyPercentExperiment expression ( &AccuracyScoreExperiment / 40 ) * 100
+		set &QuinetteAccuracyScore1Sec expression ( ( &Hits1Sec - &FalseAlarms1Sec ) / &ResponsesGiven1Sec ) * 100
+		set &QuinnetteProcessingScore1Sec expression ( ( &Hits1Sec - &NonResponses1Sec ) / 20 ) * 100
+		set &QuinetteAccuracyScore8Sec expression ( ( &Hits8Sec - &FalseAlarms8Sec ) / &ResponsesGiven8Sec ) * 100
+		set &QuinnetteProcessingScore8Sec expression ( ( &Hits8Sec - &NonResponses8Sec ) / 20 ) * 100
+		set &Mean_RT_Experiment expression ( &Sum_RT_Experiment / 40 )
+		save &AccuracyScoreExperiment &AccuracyPercentExperiment &QuinetteAccuracyScore1Sec &QuinnetteProcessingScore1Sec &QuinetteAccuracyScore8Sec &QuinnetteProcessingScore8Sec &Mean_RT_Experiment
+	fi
+
+task binding_task_part2
+	table MyTable2 #tabela que é utilizada para selecionar os estímulos que serão exibidos neste bloco
+	font myfont #fonte utilizada neste bloco
+	keys 1 2 #teclas ativas durante este bloco (teclas que o participante pode pressionar para indicar se existe ou não um match entre probe e target)
+	set &Ref 2 #variável que indica a que binding_task_parte pertence um ensaio (e.g. 1 =  binding_task_part1, 2 = binding_task_part2, etc.)
+	set &CounterExperiment expression &CounterExperiment + 1 #expressão que soma uma unidade ao counter dos ensaios experimentais cada vez que este bloco é realizado
+	show text "+" 0 0 255 0 0 #inicio da exibição da fixation cross que sinaliza o início de um ensaio
+	delay &fc_betweeen_trials_display_time
+	clear -1 #fim da exibição da fixation cross que sinaliza o início de um ensaio
+	show bitmap @2 0 0 #inicio da exibição da tela com os estímulos (Probe)
+	set &binding_task_match_8s_stimuliNumber TABLEROW #variável que em conjunto com a variável &Ref, indica qual foi o estímulo que foi apresentado
+	delay &stimuli_display_time
+	clear -1 #fim da exibição da tela com os estímulos (Probe)
+	show text @3 0 0 0 0 0 #início da apresentação do ponto de fixação apresentado durante o intervalo de retenção
+	delay &fc_display_8s 
+	clear -1 #fim da exibição da tela com o ponto de fixação  apresentado durante o intervalo de retenção
+	show bitmap @4 0 0 #inicio da exibição da tela com o estímulo alvo (target)
+	readkey @5 4000 #leitura da resposta do participante (eg. 1, 2)
+	clear -1 #fim da exibição da tela com o estímulo alvo (target)
+	set &binding_task_match_8s_RT RT #variável que contém o RT da resposta do participante
+	set &Sum_RT_Experiment expression &Sum_RT_Experiment + &binding_task_match_8s_RT
+	#cálculo da variável que indica se o participante deu uma resposta certa ou errada em cada ensaio (&binding_task_match_8s_accuracy),
+	#do número total de acertos (&AccuracyScoreExperiment), dos acertos nos ensaios com um intervalo de retenção de 8 segundos (&Hits8Sec),
+	#do número total de respostas dadas nos ensaios com um intervalo de retenção de 8 segundos(&ResponsesGiven8Sec), e do número de ensaios
+	#em que o participante não respondeu nos ensaios com um intervalo de retenção de 8 segundos (&NonResponses8Sec)
+	if STATUS == CORRECT
+		set &binding_task_match_8s_accuracy 1
+		set &AccuracyScoreExperiment expression &AccuracyScoreExperiment + 1
+		set &Hits8Sec expression &Hits8Sec + 1
+		set &ResponsesGiven8Sec expression &ResponsesGiven8Sec + 1
+	fi
+	if STATUS == WRONG
+		set &binding_task_match_8s_accuracy 0
+		set &AccuracyScoreExperiment expression &AccuracyScoreExperiment + 0
+		set &FalseAlarms8Sec expression &FalseAlarms8Sec + 1
+		set &ResponsesGiven8Sec expression &ResponsesGiven8Sec + 1
+	fi
+	if STATUS == TIMEOUT
+		set &binding_task_match_8s_accuracy 2
+		set &AccuracyScoreExperiment expression &AccuracyScoreExperiment + 0
+		set &NonResponses8Sec expression &NonResponses8Sec + 1
+	fi
+	save &Ref &binding_task_match_8s_stimuliNumber &binding_task_match_8s_RT &binding_task_match_8s_accuracy
+	#calulo do número total de acertos nos ensaios experimentais, da percentagem de acertos no ensaios experimentais
+	#e da taxa de acertos e processing score para as condições com um intervalo de retenção de 1 e 8 segundos, segundo os autores originais  
+    #da tarefa (Quinette et al. 2006)
+	if &CounterExperiment == 40
+		set &AccuracyPercentExperiment expression ( &AccuracyScoreExperiment / 40 ) * 100
+		set &QuinetteAccuracyScore1Sec expression ( ( &Hits1Sec - &FalseAlarms1Sec ) / &ResponsesGiven1Sec ) * 100
+		set &QuinnetteProcessingScore1Sec expression ( ( &Hits1Sec - &NonResponses1Sec ) / 20 ) * 100
+		set &QuinetteAccuracyScore8Sec expression ( ( &Hits8Sec - &FalseAlarms8Sec ) / &ResponsesGiven8Sec ) * 100
+		set &QuinnetteProcessingScore8Sec expression ( ( &Hits8Sec - &NonResponses8Sec ) / 20 ) * 100
+		set &Mean_RT_Experiment expression ( &Sum_RT_Experiment / 40 )
+		save &AccuracyScoreExperiment &AccuracyPercentExperiment  &QuinetteAccuracyScore1Sec &QuinnetteProcessingScore1Sec &QuinetteAccuracyScore8Sec &QuinnetteProcessingScore8Sec &Mean_RT_Experiment
+	fi
+
+task binding_task_part3
+	table MyTable3 #tabela que é utilizada para selecionar os estímulos que serão exibidos neste bloco
+	font myfont #fonte utilizada neste bloco
+	keys 1 2 #teclas ativas durante este bloco (teclas que o participante pode pressionar para indicar se existe ou não um match entre probe e target)
+	set &Ref 3 #variável que indica a que binding_task_parte pertence um ensaio (e.g. 1 =  binding_task_part1, 2 = binding_task_part2, etc.)
+	set &CounterExperiment expression &CounterExperiment + 1 #expressão que soma uma unidade ao counter dos ensaios experimentais cada vez que este bloco é realizado
+	show text "+" 0 0 255 0 0 #inicio da exibição da fixation cross que sinaliza o início de um ensaio
+	delay &fc_betweeen_trials_display_time
+	clear -1 #fim da exibição da fixation cross que sinaliza o início de um ensaio
+	show bitmap @2 0 0 #inicio da exibição da tela com os estímulos (Probe)
+	set &binding_task_mismatch_1s_stimuliNumber TABLEROW #variável que em conjunto com a variável &Ref, indica qual foi o estímulo que foi apresentado
+	delay &stimuli_display_time
+	clear -1 #fim da exibição da tela com os estímulos (Probe)
+	show text @3 0 0 0 0 0 #início da apresentação do ponto de fixação apresentado durante o intervalo de retenção
+	delay &fc_display_1s 
+	clear -1 #fim da exibição da tela com o ponto de fixação  apresentado durante o intervalo de retenção
+	show bitmap @4 0 0 #inicio da exibição da tela com o estímulo alvo (target)
+	readkey @5 4000 #leitura da resposta do participante (eg. 1, 2)
+	clear -1 #fim da exibição da tela com o estímulo alvo (target)
+	set &binding_task_mismatch_1s_RT RT #variável que contém o RT da resposta do participante
+	set &Sum_RT_Experiment expression &Sum_RT_Experiment + &binding_task_mismatch_1s_RT
+	#cálculo da variável que indica se o participante deu uma resposta certa ou errada em cada ensaio (&binding_task_mismatch_1s_accuracy),
+	#do número total de acertos (&AccuracyScoreExperiment), dos acertos nos ensaios com um intervalo de retenção de 1 segundo (&Hits1Sec),
+	#do número total de respostas dadas nos ensaios com um intervalo de retenção de 1 segundo(&ResponsesGiven1Sec), e do número de ensaios
+	#em que o participante não respondeu nos ensaios com um intervalo de retenção de 1 segundo (&NonResponses1Sec)
+	if STATUS == CORRECT
+		set &binding_task_mismatch_1s_accuracy 1
+		set &AccuracyScoreExperiment expression &AccuracyScoreExperiment + 1
+		set &Hits1Sec expression &Hits1Sec + 1
+		set &ResponsesGiven1Sec expression &ResponsesGiven1Sec + 1
+	fi
+	if STATUS == WRONG
+		set &binding_task_mismatch_1s_accuracy 0
+		set &AccuracyScoreExperiment expression &AccuracyScoreExperiment + 0
+		set &FalseAlarms1Sec expression &FalseAlarms1Sec + 1
+		set &ResponsesGiven1Sec expression &ResponsesGiven1Sec + 1
+	fi
+	if STATUS == TIMEOUT
+		set &binding_task_mismatch_1s_accuracy 2
+		set &AccuracyScoreExperiment expression &AccuracyScoreExperiment + 0
+		set &NonResponses1Sec expression &NonResponses1Sec + 1
+	fi
+	save &Ref &binding_task_mismatch_1s_stimuliNumber &binding_task_mismatch_1s_RT &binding_task_mismatch_1s_accuracy
+	#calulo do número total de acertos nos ensaios experimentais, da percentagem de acertos no ensaios experimentais
+	#e da taxa de acertos e processing score para as condições com um intervalo de retenção de 1 e 8 segundos, segundo os autores originais  
+    #da tarefa (Quinette et al. 2006)
+	if &CounterExperiment == 40
+		set &AccuracyPercentExperiment expression ( &AccuracyScoreExperiment / 40 ) * 100
+		set &QuinetteAccuracyScore1Sec expression ( ( &Hits1Sec - &FalseAlarms1Sec ) / &ResponsesGiven1Sec ) * 100
+		set &QuinnetteProcessingScore1Sec expression ( ( &Hits1Sec - &NonResponses1Sec ) / 20 ) * 100
+		set &QuinetteAccuracyScore8Sec expression ( ( &Hits8Sec - &FalseAlarms8Sec ) / &ResponsesGiven8Sec ) * 100
+		set &QuinnetteProcessingScore8Sec expression ( ( &Hits8Sec - &NonResponses8Sec ) / 20 ) * 100
+		set &Mean_RT_Experiment expression ( &Sum_RT_Experiment / 40 )
+		save &AccuracyScoreExperiment &AccuracyPercentExperiment  &QuinetteAccuracyScore1Sec &QuinnetteProcessingScore1Sec &QuinetteAccuracyScore8Sec &QuinnetteProcessingScore8Sec &Mean_RT_Experiment
+	fi
+
+task binding_task_part4
+	table MyTable4 #tabela que é utilizada para selecionar os estímulos que serão exibidos neste bloco
+	font myfont #fonte utilizada neste bloco
+	keys 1 2 #teclas ativas durante este bloco (teclas que o participante pode pressionar para indicar se existe ou não um match entre probe e target)
+	set &Ref 4 #variável que indica a que binding_task_parte pertence um ensaio (e.g. 1 =  binding_task_part1, 2 = binding_task_part2, etc.)
+	set &CounterExperiment expression &CounterExperiment + 1 #expressão que soma uma unidade ao counter dos ensaios experimentais cada vez que este bloco é realizado
+	show text "+" 0 0 255 0 0 #inicio da exibição da fixation cross que sinaliza o início de um ensaio
+	delay &fc_betweeen_trials_display_time
+	clear -1 #fim da exibição da fixation cross que sinaliza o início de um ensaio
+	show bitmap @2 0 0 #inicio da exibição da tela com os estímulos (Probe)
+	set &binding_task_mismatch_8s_stimuliNumber TABLEROW #variável que em conjunto com a variável &Ref, indica qual foi o estímulo que foi apresentado
+	delay &stimuli_display_time
+	clear -1 #fim da exibição da tela com os estímulos (Probe)
+	show text @3 0 0 0 0 0 #início da apresentação do ponto de fixação apresentado durante o intervalo de retenção
+	delay &fc_display_8s 
+	clear -1 #fim da exibição da tela com o ponto de fixação  apresentado durante o intervalo de retenção
+	show bitmap @4 0 0 #inicio da exibição da tela com o estímulo alvo (target)
+	readkey @5 4000 #leitura da resposta do participante (eg. 1, 2)
+	clear -1 #fim da exibição da tela com o estímulo alvo (target)
+	set &binding_task_mismatch_8s_RT RT #variável que contém o RT da resposta do participante
+	set &Sum_RT_Experiment expression &Sum_RT_Experiment + &binding_task_mismatch_8s_RT
+	#cálculo da variável que indica se o participante deu uma resposta certa ou errada em cada ensaio (&binding_task_mismatch_8s_accuracy),
+	#do número total de acertos (&AccuracyScoreExperiment), dos acertos nos ensaios com um intervalo de retenção de 8 segundos (&Hits8Sec),
+	#do número total de respostas dadas nos ensaios com um intervalo de retenção de 8 segundos(&ResponsesGiven8Sec), e do número de ensaios
+	#em que o participante não respondeu nos ensaios com um intervalo de retenção de 8 segundos (&NonResponses8Sec)
+	if STATUS == CORRECT
+		set &binding_task_mismatch_8s_accuracy 1
+		set &AccuracyScoreExperiment expression &AccuracyScoreExperiment + 1
+		set &Hits8Sec expression &Hits8Sec + 1
+		set &ResponsesGiven8Sec expression &ResponsesGiven8Sec + 1
+	fi
+	if STATUS == WRONG
+		set &binding_task_mismatch_8s_accuracy 0
+		set &AccuracyScoreExperiment expression &AccuracyScoreExperiment + 0
+		set &FalseAlarms8Sec expression &FalseAlarms8Sec + 1
+		set &ResponsesGiven8Sec expression &ResponsesGiven8Sec + 1
+	fi
+	if STATUS == TIMEOUT
+		set &binding_task_mismatch_8s_accuracy 2
+		set &AccuracyScoreExperiment expression &AccuracyScoreExperiment + 0
+		set &NonResponses8Sec expression &NonResponses8Sec + 1
+	fi
+	save &Ref &binding_task_mismatch_8s_stimuliNumber &binding_task_mismatch_8s_RT &binding_task_mismatch_8s_accuracy
+	#calulo do número total de acertos nos ensaios experimentais, da percentagem de acertos no ensaios experimentais
+	#e da taxa de acertos e processing score para as condições com um intervalo de retenção de 1 e 8 segundos, segundo os autores originais  
+    #da tarefa (Quinette et al. 2006)
+	if &CounterExperiment == 40
+		set &AccuracyPercentExperiment expression ( &AccuracyScoreExperiment / 40 ) * 100
+		set &QuinetteAccuracyScore1Sec expression ( ( &Hits1Sec - &FalseAlarms1Sec ) / &ResponsesGiven1Sec ) * 100
+		set &QuinnetteProcessingScore1Sec expression ( ( &Hits1Sec - &NonResponses1Sec ) / 20 ) * 100
+		set &QuinetteAccuracyScore8Sec expression ( ( &Hits8Sec - &FalseAlarms8Sec ) / &ResponsesGiven8Sec ) * 100
+		set &QuinnetteProcessingScore8Sec expression ( ( &Hits8Sec - &NonResponses8Sec ) / 20 ) * 100
+		set &Mean_RT_Experiment expression ( &Sum_RT_Experiment / 40 )
+		save &AccuracyScoreExperiment &AccuracyPercentExperiment  &QuinetteAccuracyScore1Sec &QuinnetteProcessingScore1Sec &QuinetteAccuracyScore8Sec &QuinnetteProcessingScore8Sec &Mean_RT_Experiment
+	fi
+	
+block WM_binding_task_practice #bloco que determina a quantidade de ensaios de treino
+	pager Instrucoes1 Instrucoes2 Instrucoes3
+	tasklist
+		binding_task_practice_part1 1 all_before_repeat no_repeat
+		binding_task_practice_part2 1 all_before_repeat no_repeat
+		binding_task_practice_part3 1 all_before_repeat no_repeat
+		binding_task_practice_part4 1 all_before_repeat no_repeat
+	end
+	feedback #feedback dado ao participante no final dos ensaios de treino
+		text color black
+		text align center
+		text 0 -100 &AccuracyPercentPractice ; prefix "Acertou " ; postfix "% dos ensaios de treino!"
+		text 0 0 "Agora que já treinou a tarefa irá começar." 
+		text 0 100 "Pressione a tecla <ESPAÇO> para iniciar a tarefa!"
+	end
+
+block WM_binding_task #bloco que determina a quantidade de ensaios experimentais
+	tasklist
+		binding_task_part1 10 all_before_repeat no_repeat
+		binding_task_part2 10 all_before_repeat no_repeat
+		binding_task_part3 10 all_before_repeat no_repeat
+		binding_task_part4 10 all_before_repeat no_repeat
+	end
+	feedback #feedback dado ao participante no final dos ensaios experimentais
+		text color black
+		text align center
+		text 0 -100 &AccuracyPercentExperiment ; prefix "Acertou " ; postfix "% dos ensaios experimentais!"
+		text 0 100 "Pressione a tecla <ESPAÇO> para terminar a tarefa!"
+	end
+
+#################################################################################################################################################
+#Interpretação do Output com os resultados:
+#
+#A primeira linha contém apenas uma coluna. O valor contido nesta célula diz respeito ao número de acertos que o participante obteve 
+#nos ensaios de treino (&AccuracyScorePractice)
+#Da Linha 2 à linha 41: 1ª coluna - valor da variável &Ref; 2ª coluna - sinaliza o número do estímulo que foi exibido 
+#(contém o valor de variáveis como &binding_task_match_1s_stimuliNumber); 3ª coluna - contém o valor do RT dos participantes (contido em variáveis como
+# &binding_task_match_1s_RT); #4a coluna - indica se o participante acertou (value 1) ou não acertou neste ensaio (value 0), 
+#ou se não respondeu neste ensaio (value 2)
+#Linha 42: 1ª coluna - Número total de acertos do participante nos ensaios experimentais (contido na variável &AccuracyScoreExperiment; 
+#2ª coluna - Percentagem de acertos do participante nos ensaios experimentais (contido na variável &AccuracyPercentExperiment);
+#3ª coluna - valor do accuracy score de Quinette para as condições com um intervalo de retenção de 1 segundo
+#(contido na variável &QuinetteAccuracyScore1Sec); 
+#4ª coluna - valor do processing score de Quinette para as condições com um intervalo de retenção de 1 segundo
+#(contido na variável &QuinnetteProcessingScore1Sec);
+#5ª coluna - valor do accuracy score de Quinette para as condições com um intervalo de retenção de 8 segundos
+#(contido na variável &QuinetteAccuracyScore8Sec); 
+#6ª coluna - valor do processing score de Quinette para as condições com um intervalo de retenção de 8 segundos
+#(contido na variável &QuinnetteProcessingScore8Sec);
+#7a coluna: tempo de reação médio (contido na variável &Mean_RT_Experiment) 
